@@ -6,7 +6,7 @@ import MicIcon from '@material-ui/icons/Mic';
 import InsertEmoticonIcon from '@material-ui/icons/InsertEmoticon';
 import './Chat.css';
 import { useParams } from 'react-router-dom';
-import db from './firebase';
+import db,{} from './firebase';
 import firebase from 'firebase';
 import {useStateValue} from "./StateProvider";
 import { actionTypes } from './reducer';
@@ -14,6 +14,7 @@ import "emoji-mart/css/emoji-mart.css";
 import { Picker } from "emoji-mart";
 
 function Chat() {
+    const storage = firebase.storage();
     const [input, setInput] = useState("");
     const [seed, setSeed] = useState("");
     const {roomId} = useParams();
@@ -78,7 +79,29 @@ function Chat() {
             type: actionTypes.SET_TOGGLE,
             toggle: false,
         })
-    )
+    );
+    const hiddenFileInput = useRef(null);
+
+    const uploadImage= (() => {
+        console.log("hry");
+        hiddenFileInput.current.click();
+    });
+
+    const handleChange = async (event) => {
+        console.log("I am Clicked");
+        const file = event.target.files[0];
+        const storageRef=storage.ref();
+        const fileRef=storageRef.child(file.name);
+        await fileRef.put(file)
+        const fileUrl= await fileRef.getDownloadURL()
+        db.collection('rooms').doc(roomId).collection('messages').add({
+            imageUrl: fileUrl,
+            name: user.displayName,
+            timestamp: firebase.firestore.FieldValue.serverTimestamp(),
+        })
+    };
+
+
     return (
         <div className={toggle ?"chat":"hide_chat_mobile"}>
             <div className='chat_header'>
@@ -97,9 +120,7 @@ function Chat() {
                     <IconButton>
                         <ArrowBackIcon onClick={handleClick}/>
                     </IconButton>
-                    <IconButton>
-                        <AttachFile/>
-                    </IconButton>
+                    
                     <IconButton>
                         <MoreVert/>
                     </IconButton>
@@ -110,7 +131,7 @@ function Chat() {
                 {messages.map(message => (
                     <p className={`chat_message ${ message.name == user.displayName && 'chat_receiver'}`}>
                         <span className="chat_name">{message.name}</span>
-                        {message.message}
+                        {message.message?message.message:<img className="image_msg" alt={message.name} src={message.imageUrl}/>}
                         <span className="chat_timestemp">{new Date(new Date(message.timestamp?.toDate()).toUTCString()).toLocaleString()}</span>
                     </p>
                 ))}
@@ -123,8 +144,11 @@ function Chat() {
               />
               {emoji ? <Picker onSelect={addEmoji} /> : null}
             </IconButton>
-            
+                    <IconButton>
+                        <AttachFile onClick={uploadImage}/>
+                    </IconButton>
                 <form>
+                    <input type="file" style={{display:'none'}} ref={hiddenFileInput} onChange={handleChange} />
                     <input value={input} onChange={(e) => setInput(e.target.value)} type="text" placeholder="Type a message"/>
                     <button type="submit" onClick={sendMessage}> Send a Message</button>
                 </form>

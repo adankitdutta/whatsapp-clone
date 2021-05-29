@@ -66,6 +66,7 @@
 @media (max-width: 768px) {
   .sidebar {
     flex: 1;
+    height: 100vh;
   }
 
   .hide_sidebar_mobile {

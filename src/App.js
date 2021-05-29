@@ -5,6 +5,7 @@ import Chat from "./Chat";
 import { Route, BrowserRouter as Router , Switch } from 'react-router-dom';
 import Login from "./Login";
 import { useStateValue } from './StateProvider';
+import { grey } from "@material-ui/core/colors";
 
 function App() {
 
@@ -31,7 +32,7 @@ function App() {
       </div>
     )}
       
-
+    <h6 style={{color:"gray"}}>Made by Ankit Dutta</h6>
     </div>
   );
 }

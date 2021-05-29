@@ -3,7 +3,6 @@
 }
 body ::-webkit-scrollbar {
   display: none;
-  height: 100%;
 }
 body {
   margin: 0;
