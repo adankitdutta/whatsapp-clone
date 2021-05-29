@@ -1,4 +1,4 @@
-import React, {useState,useEffect} from 'react';
+import React, {useState,useEffect,useRef} from 'react';
 import {Avatar, IconButton} from '@material-ui/core';
 import {AttachFile, MoreVert} from '@material-ui/icons';
 import ArrowBackIcon from '@material-ui/icons/ArrowBack';
@@ -10,6 +10,8 @@ import db from './firebase';
 import firebase from 'firebase';
 import {useStateValue} from "./StateProvider";
 import { actionTypes } from './reducer';
+import "emoji-mart/css/emoji-mart.css";
+import { Picker } from "emoji-mart";
 
 function Chat() {
     const [input, setInput] = useState("");
@@ -18,6 +20,20 @@ function Chat() {
     const [roomName, setRoomName] = useState("");
     const [messages, setMessages] = useState([]);
     const [{user,toggle}, dispatch] = useStateValue();
+    const [emoji, setEmoji] = useState(false);
+
+    const messageEl = useRef(null);
+
+    const addEmoji = (e) => {
+        let emoji = e.native;
+        setInput(input + emoji);
+      };
+      const checkEmojiClose = () => {
+        if (emoji) {
+          setEmoji(false);
+        }
+      };
+
 
     useEffect(()=>{
         if(roomId){
@@ -30,7 +46,16 @@ function Chat() {
             });
 
         }
-    },[roomId])
+    },[roomId]);
+
+    useEffect(() => {
+        if (messageEl) {
+          messageEl.current.addEventListener('DOMNodeInserted', event => {
+            const { currentTarget: target } = event;
+            target.scroll({ top: target.scrollHeight, behavior: 'smooth' });
+          });
+        }
+      }, [])
 
     useEffect(() => {
         setSeed(Math.floor(Math.random() * 5000));        
@@ -81,7 +106,7 @@ function Chat() {
                     
                 </div>
             </div>
-            <div className='chat_body'>
+            <div className='chat_body' ref={messageEl}>
                 {messages.map(message => (
                     <p className={`chat_message ${ message.name == user.displayName && 'chat_receiver'}`}>
                         <span className="chat_name">{message.name}</span>
@@ -91,7 +116,14 @@ function Chat() {
                 ))}
             </div>
             <div className='chat_footer'>
-                <InsertEmoticonIcon />
+            <IconButton>
+            <InsertEmoticonIcon
+                className="yellow"
+                onClick={() => setEmoji(!emoji)}
+              />
+              {emoji ? <Picker onSelect={addEmoji} /> : null}
+            </IconButton>
+            
                 <form>
                     <input value={input} onChange={(e) => setInput(e.target.value)} type="text" placeholder="Type a message"/>
                     <button type="submit" onClick={sendMessage}> Send a Message</button>

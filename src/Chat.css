@@ -87,6 +87,7 @@
 
 .chat_footer {
   display: flex;
+  padding: 0 10px;
   align-items: center;
   justify-content: space-between;
   height: 62px;
@@ -104,6 +105,14 @@
   padding: 10px;
   border: none;
   margin: 0 10px 0px 10px;
+}
+
+.emoji-mart {
+  position: absolute !important;
+  top: -930%;
+  z-index: 999;
+  left: 0;
+  width: 20vw !important;
 }
 
 .chat_footer > form > button {
@@ -126,5 +135,11 @@
   .chat_headerInfo > p {
     color: gray;
     font-size: 0.7rem;
+  }
+
+  .emoji-mart {
+    width: 80vw !important;
+    z-index: 999;
+    top: -970%;
   }
 }

@@ -18,6 +18,7 @@ function Sidebar(props) {
     const [rooms,setRooms]=useState([]);
 
     useEffect(() => {
+        
         const unsubscribe=db.collection('rooms').onSnapshot(snapshot=>
             setRooms(snapshot.docs.map((doc)=>({
                 id:doc.id,
@@ -62,11 +63,14 @@ function Sidebar(props) {
                     <input placeholder="Search or Start new Chat" type="text" className="text" />
                 </div>
             </div>
-            <div className="sidebar_chats" onClick={handleClick}>
+            <div className="sidebar_chats" >
                 <SidebarChat addNewChat/>
+                <div onClick={handleClick}>
                 {rooms.map(room=>(
                     <SidebarChat key={room.id} id={room.id } name={room.data.name} />
                 ))}
+                </div>
+                
             </div>
             
         </div>
