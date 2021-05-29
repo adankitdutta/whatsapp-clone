@@ -151,7 +151,19 @@
 
   .image_msg {
     display: block;
-    width: 60vw;
+    width: 50vw;
     object-fit: contain;
+  }
+
+  .chat_footer > form > input {
+    flex: 1;
+    border-radius: 30px;
+    padding: 10px;
+    border: none;
+    margin: 0 10px 0px 10px;
+  }
+
+  .message_input {
+    width: 20vw;
   }
 }

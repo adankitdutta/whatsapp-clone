@@ -2,6 +2,7 @@ import React, {useState,useEffect,useRef} from 'react';
 import {Avatar, IconButton} from '@material-ui/core';
 import {AttachFile, MoreVert} from '@material-ui/icons';
 import ArrowBackIcon from '@material-ui/icons/ArrowBack';
+import AddPhotoAlternateIcon from '@material-ui/icons/AddPhotoAlternate';
 import MicIcon from '@material-ui/icons/Mic';
 import InsertEmoticonIcon from '@material-ui/icons/InsertEmoticon';
 import './Chat.css';
@@ -145,14 +146,16 @@ function Chat() {
               {emoji ? <Picker onSelect={addEmoji} /> : null}
             </IconButton>
                     <IconButton>
-                        <AttachFile onClick={uploadImage}/>
+                        <AddPhotoAlternateIcon onClick={uploadImage}/>
                     </IconButton>
                 <form>
                     <input type="file" style={{display:'none'}} ref={hiddenFileInput} onChange={handleChange} />
-                    <input value={input} onChange={(e) => setInput(e.target.value)} type="text" placeholder="Type a message"/>
+                    <input className="message_input" value={input} onChange={(e) => setInput(e.target.value)} type="text" placeholder="Type a message"/>
                     <button type="submit" onClick={sendMessage}> Send a Message</button>
                 </form>
+                <IconButton>
                 <MicIcon/>
+                </IconButton>
             </div>
             
         </div>
