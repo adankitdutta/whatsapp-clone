@@ -53,12 +53,20 @@ function Sidebar() {
        return room.data.name.toLowerCase().includes(search.toLowerCase());
     })
 
+
+    const photoURL =
+    localStorage.getItem("photoURL") !== ""
+      ? localStorage.getItem("photoURL")
+      : null;
+  const displayName = localStorage.getItem("displayName");
+
+
     return (
         <div className={toggle ?"hide_sidebar_mobile":"sidebar"}> 
             <div className="sidebar_header">
             <div className="sidebar_header_user_details">
-                <Avatar className="avatar_image" src={user?.photoURL}/>
-                <p>{user.displayName}</p>
+                <Avatar className="avatar_image" src={photoURL}/>
+                <p>{displayName}</p>
                 </div>
                 <div className="sidebar_header_right">
                     <IconButton>

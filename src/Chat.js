@@ -14,6 +14,7 @@ import { actionTypes } from './reducer';
 import "emoji-mart/css/emoji-mart.css";
 import { Picker } from "emoji-mart";
 import SendIcon from '@material-ui/icons/Send';
+import useSound from "use-sound";
 
 function Chat() {
     const storage = firebase.storage();
@@ -24,6 +25,8 @@ function Chat() {
     const [messages, setMessages] = useState([]);
     const [{user,toggle}, dispatch] = useStateValue();
     const [emoji, setEmoji] = useState(false);
+    const displayName = localStorage.getItem("displayName");
+    const [issendChecked, setIssendChecked] = useState(false);
 
     const messageEl = useRef(null);
 
@@ -31,6 +34,13 @@ function Chat() {
         let emoji = e.native;
         setInput(input + emoji);
       };
+
+    const [playOn] = useSound(`${process.env.PUBLIC_URL}/send.mp3`, {
+    volume: 0.5,
+    });
+    const [playOff] = useSound(`${process.env.PUBLIC_URL}/send.mp3`, {
+    volume: 0.5,
+    });
 
     useEffect(()=>{
         if(roomId){
@@ -60,13 +70,16 @@ function Chat() {
 
     const sendMessage = (e) => {
         e.preventDefault();
+        if (input.length > 0) {
         db.collection('rooms').doc(roomId).collection('messages').add({
             message: input,
-            name: user.displayName,
+            name: displayName,
             timestamp: firebase.firestore.FieldValue.serverTimestamp(),
         })
-
+        setIssendChecked(!issendChecked);
+        issendChecked ? playOff() : playOn();
         setInput("");
+      }
     }
 
 
@@ -125,7 +138,7 @@ function Chat() {
             </div>
             <div className='chat_body' ref={messageEl} >
                 {messages.map(message => (
-                    <p className={`chat_message ${ message.name === user.displayName && 'chat_receiver'}`}>
+                    <p className={`chat_message ${ message.name === displayName && 'chat_receiver'}`}>
                         <span className="chat_name">{message.name}</span>
                         {message.message?<p className="message_content">{message.message}</p>:<img className="image_msg" alt={message.name} src={message.imageUrl}/>}
                         <span className="chat_timestemp"> {new Date(new Date(message.timestamp?.toDate()).toUTCString()).toLocaleString()}</span>
