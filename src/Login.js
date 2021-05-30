@@ -15,6 +15,12 @@ function Login() {
                     type: actionTypes.SET_USER,
                     user: result.user,
                 })
+                dispatch({
+                    type: actionTypes.SET_SESSION,
+                    uid: result.user.uid,
+                    displayName: result.user.displayName,
+                    photoURL: result.user.photoURL,
+                  });
             })
             .catch((error) => alert(error.message));
     }

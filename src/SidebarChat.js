@@ -35,7 +35,7 @@ function SidebarChat({id,name,addNewChat}) {
 
     const deleteRoom = () => {
         const passwordVerify = prompt("Enter Admin Password to delete Room");
-        if (passwordVerify == password) {
+        if (passwordVerify === password) {
           db.collection("rooms")
             .doc(id)
             .delete()
@@ -57,7 +57,7 @@ function SidebarChat({id,name,addNewChat}) {
                 <Avatar src={`https://avatars.dicebear.com/api/human/${seed}.svg`}/>
                 <div className="sidebarChat_info">
                     <h2>{name}</h2>
-                    <p>{messages[0]?.message}</p>
+                    <p className="message_content">{messages[0]?.message}</p>
                 </div>
                 </div>
         </Link>

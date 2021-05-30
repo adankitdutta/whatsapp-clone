@@ -76,13 +76,16 @@
 }
 
 .chat_timestemp {
-  margin-left: 10px;
-  font-size: xx-small;
+  font-size: 0.51rem;
 }
 
 .chat_receiver {
   margin-left: auto;
   background-color: #dcf8c6;
+}
+
+.message_content {
+  overflow-wrap: anywhere;
 }
 
 .chat_footer {

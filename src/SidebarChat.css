@@ -43,3 +43,7 @@ a {
   color: black;
   width: 97%;
 }
+
+.message_content {
+  overflow-wrap: anywhere;
+}

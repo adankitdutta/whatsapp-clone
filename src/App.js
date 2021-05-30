@@ -1,19 +1,23 @@
-import React, {useState} from "react";
+import React from "react";
 import './App.css';
 import Sidebar from './Sidebar';
 import Chat from "./Chat";
 import { Route, BrowserRouter as Router , Switch } from 'react-router-dom';
 import Login from "./Login";
 import { useStateValue } from './StateProvider';
-import { grey } from "@material-ui/core/colors";
 
 function App() {
 
   const [{ user },dispatch] = useStateValue();
+  const uid =
+    localStorage.getItem("uid") !== undefined
+      ? localStorage.getItem("uid")
+      : null;
+
 
   return (
     <div className="app">
-    {!user ?(
+    {!user && !uid  ?(
         <Login/>
     ):
     (

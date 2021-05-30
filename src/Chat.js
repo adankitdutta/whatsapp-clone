@@ -1,6 +1,6 @@
 import React, {useState,useEffect,useRef} from 'react';
 import {Avatar, IconButton} from '@material-ui/core';
-import {AttachFile, MoreVert} from '@material-ui/icons';
+import { MoreVert} from '@material-ui/icons';
 import ArrowBackIcon from '@material-ui/icons/ArrowBack';
 import AddPhotoAlternateIcon from '@material-ui/icons/AddPhotoAlternate';
 import MicIcon from '@material-ui/icons/Mic';
@@ -13,6 +13,7 @@ import {useStateValue} from "./StateProvider";
 import { actionTypes } from './reducer';
 import "emoji-mart/css/emoji-mart.css";
 import { Picker } from "emoji-mart";
+import SendIcon from '@material-ui/icons/Send';
 
 function Chat() {
     const storage = firebase.storage();
@@ -30,12 +31,6 @@ function Chat() {
         let emoji = e.native;
         setInput(input + emoji);
       };
-      const checkEmojiClose = () => {
-        if (emoji) {
-          setEmoji(false);
-        }
-      };
-
 
     useEffect(()=>{
         if(roomId){
@@ -128,12 +123,12 @@ function Chat() {
                     
                 </div>
             </div>
-            <div className='chat_body' ref={messageEl}>
+            <div className='chat_body' ref={messageEl} >
                 {messages.map(message => (
-                    <p className={`chat_message ${ message.name == user.displayName && 'chat_receiver'}`}>
+                    <p className={`chat_message ${ message.name === user.displayName && 'chat_receiver'}`}>
                         <span className="chat_name">{message.name}</span>
-                        {message.message?message.message:<img className="image_msg" alt={message.name} src={message.imageUrl}/>}
-                        <span className="chat_timestemp">{new Date(new Date(message.timestamp?.toDate()).toUTCString()).toLocaleString()}</span>
+                        {message.message?<p className="message_content">{message.message}</p>:<img className="image_msg" alt={message.name} src={message.imageUrl}/>}
+                        <span className="chat_timestemp"> {new Date(new Date(message.timestamp?.toDate()).toUTCString()).toLocaleString()}</span>
                     </p>
                 ))}
             </div>
@@ -154,10 +149,9 @@ function Chat() {
                     <button type="submit" onClick={sendMessage}> Send a Message</button>
                 </form>
                 <IconButton>
-                <MicIcon/>
-                </IconButton>
+                {input ? <SendIcon onClick={sendMessage}/> : <MicIcon />}
+            </IconButton>
             </div>
-            
         </div>
     )
 }
