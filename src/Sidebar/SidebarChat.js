@@ -1,10 +1,10 @@
 import React, {useEffect, useState} from 'react';
 import {Avatar} from "@material-ui/core";
 import './SidebarChat.css';
-import db from './firebase';
+import db from '../firebase';
 import {Link} from 'react-router-dom';
 import DeleteIcon from '@material-ui/icons/Delete';
-import { password } from "./constants";
+import { password } from "../constants";
 
 function SidebarChat({id,name,addNewChat}) {
     const [seed, setSeed] = useState("");

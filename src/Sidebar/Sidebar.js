@@ -5,9 +5,9 @@ import DonutLargeIcon from '@material-ui/icons/DonutLarge';
 import ChatIcon from '@material-ui/icons/Chat';
 import { SearchOutlined } from '@material-ui/icons';
 import SidebarChat from "./SidebarChat";
-import db from "./firebase";
-import { useStateValue } from './StateProvider';
-import { actionTypes } from './reducer';
+import db from "../firebase";
+import { useStateValue } from '../StateProvider';
+import { actionTypes } from '../reducer';
 import ExitToAppIcon from "@material-ui/icons/ExitToApp";
   
 function Sidebar() {
